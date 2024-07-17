@@ -31,9 +31,9 @@ class Config:
         return self._config[key] if key in self._config else None
 
 
-def get_bot_key(filepath: str = './data/config.json'):
+def get_bot_key(filepath: str = './data/bot_key.txt'):
     with open(filepath, 'r') as f:
-        key = f.read()
+        key = f.readline().strip()
 
     return key
 

@@ -29,8 +29,8 @@ async def change_bot_status():
 @bot.event
 async def on_ready():
     dprint('bot connected successfuly!')
-    change_bot_status.start()
     await sync_slash_commands()
+    change_bot_status.start()
 
 
 @bot.command(aliases=['hi', 'morning', 'hey'])
@@ -41,11 +41,15 @@ async def hello(ctx: commands.Context):
     await ctx.send(msg)
 
 
-@bot.tree.command(description='reports what the user said')
-@app_commands.describe(message='the message to tell')
-async def report(inter: discord.Interaction, message: str):
+@bot.tree.command(description='tells what the user said')
+@app_commands.describe(
+    message='the message to tell',
+    tts="say it louder!")
+async def tell(inter: discord.Interaction, message: str, tts: bool = False):
+    dprint(f"[{inter.user.display_name} called {inter.command.name}!")
+
     await inter.response.send_message(
-        f"{inter.user.mention} said '{message}'.")
+        f"{inter.user.mention} said '{message}'.", tts=tts)
 
 
 # ----------------------------------------------------------------------------
@@ -55,8 +59,8 @@ async def sync_slash_commands():
     try:
         await bot.tree.sync()
         dprint("bot's slash command loaded successfully!")
-    except Exception:
-        dprint("failed to sync the bot's slash command!")
+    except Exception as e:
+        dprint(f"failed to sync the bot's slash command! ({str(e)})")
 
 
 async def load_cogs():

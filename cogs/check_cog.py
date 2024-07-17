@@ -17,7 +17,7 @@ class CheckCog(commands.Cog):
 
     @commands.command()
     async def whoami(self, ctx: commands.Context):
-        dprint(f"[{ctx.author.display_name} called {
+        dprint(f"{ctx.author.display_name} called {
                ctx.command.name}!", src=self.__cog_name__)
 
         embed = discord.Embed(color=ctx.author.color,
@@ -53,6 +53,9 @@ class CheckCog(commands.Cog):
 
     @app_commands.command(description='Gives the current datetime')
     async def now(self, inter: discord.Interaction):
+        dprint(f"{inter.user.display_name} called {
+               inter.command.name}!", src=self.__cog_name__)
+
         dt = datetime.now()
         await inter.response.send_message(str(dt), ephemeral=True)
 
