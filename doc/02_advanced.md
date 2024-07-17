@@ -47,24 +47,23 @@ This task can then be started: `a_great_task.start()`
 
 ---
 
-## Slash Commands
+## Interactions
 
-- To create a slash command:
+> It looks like all `bot.tree.*` become `app_commands.*` usable in Cogs.
+> So no Cog version will be given as the rest is the same.
 
-**Directly on the bot:**
+- To create a **Slash Command**:
 ```py
-@bot.tree.command(description='some slash command description')
+@bot.tree.command(description="Some slash command description.")
 async def a_slash_command(inter: discord.Interaction):
     await inter.response.send_message(...) # to send back a message
 ```
 
-**Inside a Cog**
+
+- To create a **Context Menu**:
 ```py
-from discord import app_commands
-
-@app_commands.command(description='some slash command description')
+@bot.tree.context_menu(name="The Name in the Context Menu")
 async def a_slash_command(inter: discord.Interaction):
-    await inter.response.send_message(...) # to send back a message
+    ...
 ```
-
-- To sync the commands with discord servers : `bot.tree.sync()`
+> Context Menus are only available for `discord.User`, `discord.Member`, and `discord.Message`.

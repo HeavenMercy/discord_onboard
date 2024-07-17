@@ -35,7 +35,7 @@ async def on_ready():
 
 @bot.command(aliases=['hi', 'morning', 'hey'])
 async def hello(ctx: commands.Context):
-    dprint(f"[{ctx.author.display_name} called {ctx.command.name}!")
+    dprint(f"[{ctx.author.display_name}] called {ctx.command.name}!")
 
     msg = f"Hello there, {ctx.author.mention}"
     await ctx.send(msg)
@@ -46,10 +46,21 @@ async def hello(ctx: commands.Context):
     message='the message to tell',
     tts="say it louder!")
 async def tell(inter: discord.Interaction, message: str, tts: bool = False):
-    dprint(f"[{inter.user.display_name} called {inter.command.name}!")
+    dprint(f"[{inter.user.display_name}] called {inter.command.name}!")
 
     await inter.response.send_message(
         f"{inter.user.mention} said '{message}'.", tts=tts)
+
+
+@bot.tree.context_menu(name="Delete Message")
+async def delete_message(inter: discord.Interaction, message: discord.Message):
+    dprint(f"[{inter.user.display_name}] called {inter.command.name}!")
+
+    try:
+        await message.delete()
+        await inter.response.send_message(f"Message deleted successfully!", ephemeral=True, delete_after=2)
+    except Exception:
+        await inter.response.send_message(f"Message couldn't be deleted!", ephemeral=True, delete_after=2)
 
 
 # ----------------------------------------------------------------------------
